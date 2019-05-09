@@ -1,0 +1,21 @@
+version: "2.1"
+services:
+  mssql:
+    image: microsoft/mssql-server-windows-express
+    ports:
+      - "3333:1433"
+    environment:
+      sa_password: "demo2018#"
+      ACCEPT_EULA: "y"
+      attach_dbs: '[{"dbName": "SqlServerDocker", "dbFiles": ["c:\\data\\SqlServerDocker.mdf","c:\\data\\SqlServerDocker_log.ldf"]}]'
+    volumes:
+      - ".\\db:c:\\data"
+  site:
+    image: microsoft/aspnet:4.6.2
+    ports:
+      - "8000:80"
+    volumes:
+      - ".\\site:c:\\inetpub\\wwwroot"
+    links:
+      - mssql
+
